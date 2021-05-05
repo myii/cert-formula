@@ -1,0 +1,76 @@
+= cert-formula
+
+https://travis-ci.com/saltstack-formulas/cert-formula[image:https://travis-ci.com/saltstack-formulas/cert-formula.svg?branch=master[Travis CI Build Status]]
+https://github.com/semantic-release/semantic-release[image:https://img.shields.io/badge/%20%20%F0%9F%93%A6%F0%9F%9A%80-semantic--release-e10079.svg[Semantic Release]]
+
+A SaltStack formula to deploy certificates.
+
+== General notes
+
+See the full
+https://docs.saltstack.com/en/latest/topics/development/conventions/formulas.html[SaltStack
+Formulas installation and usage instructions].
+
+If you are interested in writing or contributing to formulas, please pay
+attention to the
+https://docs.saltstack.com/en/latest/topics/development/conventions/formulas.html#writing-formulas[Writing
+Formula Section].
+
+If you want to use this formula, please pay attention to the `FORMULA`
+file and/or `git tag`, which contains the currently released version.
+This formula is versioned according to http://semver.org/[Semantic
+Versioning].
+
+See
+https://docs.saltstack.com/en/latest/topics/development/conventions/formulas.html#versioning[Formula
+Versioning Section] for more details.
+
+If you need (non-default) configuration, please refer to:
+
+* xref:main::map.jinja.adoc[how to configure the formula with map.jinja]
+* the `pillar.example` file
+
+== Contributing to this repo
+
+*Commit message formatting is significant!!*
+
+Please see
+xref:main::CONTRIBUTING.adoc[How
+to contribute] for more details.
+
+== Available states
+
+=== `cert`
+
+_Meta-state (This is a state that includes other states)_.
+
+Deploys or removes given certificates and keys.
+
+=== `cert.package`
+
+This state will install the required packages to manage certificates.
+
+=== `cert.deployed`
+
+This state will write the certificates and there matching keys, if any,
+are store on disk and integrated in the system.
+
+== Available modules
+
+=== `cert_formula_helper.get_filenames_matching_content`
+
+A helper function to find certificate files that match certificate
+contents. Useful if a certificate file gets renamed to something you
+don't remember and have trouble finding a certificate you wish to
+remove.
+
+_Example_
+
+Example that finds all certificate files in
+/usr/local/share/ca-certificates matching the certificate contents found
+in the pillar data in cert:certlist:cert.filename:cert
+
+[source,]
+----
+salt-call cert_formula_helper.get_filenames_matching_content /usr/local/share/ca-certificates  pillar_key="cert:certlist:cert.filename:cert"
+----
