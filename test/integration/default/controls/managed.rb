@@ -7,12 +7,17 @@ control 'managed' do
 
   cert_dir = '/etc/ssl/certs/'
   key_dir = '/etc/ssl/private/'
-  case os[:name]
+  case platform[:name]
   when 'debian', 'ubuntu'
     cert_dir = '/usr/local/share/ca-certificates/'
   when 'redhat', 'centos', 'fedora', 'amazon', 'oracle'
     cert_dir = '/etc/pki/tls/certs/'
     key_dir = '/etc/pki/tls/private/'
+  when 'opensuse'
+    case system.platform[:release]
+    when 'tumbleweed'
+      key_dir = '/var/lib/private/'
+    end
   end
 
   describe file("#{cert_dir}cert.from.src.to.add.crt") do
